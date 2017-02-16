@@ -106,6 +106,7 @@ public class MainWindow extends JFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				action = actionNumber;
+				select = false;
 			}
 		});
 		button.setText(text);
