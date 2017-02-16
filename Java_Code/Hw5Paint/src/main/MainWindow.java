@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 
 	public MainWindow() {
 
-		JFrame frame = this;
+		final JFrame frame = this;
 
 		frame.setSize(800, 600);
 		frame.setTitle("Paint");
