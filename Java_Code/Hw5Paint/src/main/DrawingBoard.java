@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -24,6 +27,46 @@ public class DrawingBoard extends JComponent {
 	private Point end;
 
 	public DrawingBoard() {
+
+		// action listener to zoom
+		this.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int a = -e.getWheelRotation();
+				ArrayList<Shape> temp = new ArrayList<Shape>();
+				for (Shape s : shapes) {
+					Shape shape = null;
+					if (s.toString().substring(14, 18).equals("Line")) {
+						// Create a new line using x & y coordinates
+						shape = drawLine((int) s.getBounds2D().getMinX() - a,
+								(int) s.getBounds2D().getMinY() - a, (int) s
+										.getBounds2D().getMaxX() + a, (int) s
+										.getBounds2D().getMaxY() + a);
+					} else
+
+					if (s.toString().substring(14, 18).equals("Elli")) {
+						// Create a new circle using x & y coordinates
+						shape = drawEllipse((int) s.getBounds2D().getMinX() - a,
+								(int) s.getBounds2D().getMinY() - a, (int) s
+								.getBounds2D().getMaxX() + a, (int) s
+								.getBounds2D().getMaxY() + a);
+					} else
+
+					if (s.toString().substring(14, 18).equals("Rect")) {
+						// Create a new rectangle using x & y coordinates
+						shape = drawRectangle((int) s.getBounds2D().getMinX() - a,
+								(int) s.getBounds2D().getMinY() - a, (int) s
+								.getBounds2D().getMaxX() + a, (int) s
+								.getBounds2D().getMaxY() + a);
+					}
+					temp.add(shape);
+					System.out.println(s.toString().substring(14, 18)
+							+ "\na = " + a);
+
+				}
+				shapes = temp;
+				repaint();
+			}
+		});
 
 		// action listener to get start points of the shape
 		this.addMouseListener(new MouseAdapter() {
@@ -182,7 +225,7 @@ public class DrawingBoard extends JComponent {
 
 	private void contain(Point p) {
 
-		try{
+		try {
 			Iterator<Shape> shapeIter = shapes.iterator();
 			Shape shape = shapeIter.next();
 			for (int i = 0; i < shapes.size(); i++) {
@@ -194,8 +237,9 @@ public class DrawingBoard extends JComponent {
 				}
 				shape = shapeIter.next();
 			}
-		}catch(Exception e){}
-		
+		} catch (Exception e) {
+		}
+
 	}
 
 }
