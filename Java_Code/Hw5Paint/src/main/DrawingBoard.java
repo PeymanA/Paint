@@ -34,6 +34,8 @@ public class DrawingBoard extends JComponent {
 						end = start;
 						repaint();
 					}
+				} else {
+					contain(e.getPoint());
 				}
 			}
 
@@ -136,8 +138,8 @@ public class DrawingBoard extends JComponent {
 		int width = Math.abs(x1 - x2);
 		// by commenting this, my app only draw circles and not ellipses
 		// anymore!
-		// int height = Math.abs(y1 - y2);
-		return new Ellipse2D.Float(x, y, width, /* height */width);
+		int height = Math.abs(y1 - y2);
+		return new Ellipse2D.Float(x, y, width, height);
 
 	}
 
@@ -176,6 +178,24 @@ public class DrawingBoard extends JComponent {
 		int b = Integer.parseInt(rgb[2].split("=")[1]);
 
 		EntityManager.addIntoDatabase(x, y, height, weight, r, g, b, type);
+	}
+
+	private void contain(Point p) {
+
+		try{
+			Iterator<Shape> shapeIter = shapes.iterator();
+			Shape shape = shapeIter.next();
+			for (int i = 0; i < shapes.size(); i++) {
+				if (shape.contains(p)) {
+					colors.add(MainWindow.color);
+					shapes.add(shape);
+					repaint();
+					break;
+				}
+				shape = shapeIter.next();
+			}
+		}catch(Exception e){}
+		
 	}
 
 }
