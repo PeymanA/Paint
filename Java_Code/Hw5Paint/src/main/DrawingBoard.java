@@ -34,8 +34,6 @@ public class DrawingBoard extends JComponent {
 						end = start;
 						repaint();
 					}
-				} else {
-					contain(e.getPoint());
 				}
 			}
 
@@ -178,25 +176,6 @@ public class DrawingBoard extends JComponent {
 		int b = Integer.parseInt(rgb[2].split("=")[1]);
 
 		EntityManager.addIntoDatabase(x, y, height, weight, r, g, b, type);
-	}
-
-	public void contain(Point p) {
-
-		Iterator<Shape> shapeIter = shapes.iterator();
-		Shape shape = shapeIter.next();
-		for (int i = 0; i < shapes.size(); i++) {
-			if (shape.contains(p)) {
-				colors.add(MainWindow.color);
-				shapes.add(shape);
-				repaint();
-				break;
-			}
-
-			else {
-				System.out.println("N");
-				shape = shapeIter.next();
-			}
-		}
 	}
 
 }
