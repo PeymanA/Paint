@@ -31,6 +31,7 @@ public class DrawingBoard extends JComponent {
 		// action listener to zoom
 		this.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				
 				int a = -e.getWheelRotation();
 				ArrayList<Shape> temp = new ArrayList<Shape>();
 				for (Shape s : shapes) {
@@ -50,7 +51,7 @@ public class DrawingBoard extends JComponent {
 						endX -= (e.getX() - endX) / 50 * a;
 					else
 						endX += (endX - e.getX()) / 50 * a;
-					if (endY <e.getY())
+					if (endY < e.getY())
 						endY -= (e.getY() - endY) / 50 * a;
 					else
 						endY += (endY - e.getY()) / 50 * a;
@@ -78,6 +79,7 @@ public class DrawingBoard extends JComponent {
 				repaint();
 			}
 		});
+		
 
 		// action listener to get start points of the shape
 		this.addMouseListener(new MouseAdapter() {
@@ -89,7 +91,7 @@ public class DrawingBoard extends JComponent {
 						repaint();
 					}
 				} else {
-					contain(e.getPoint());
+					changeColor(e.getPoint());
 				}
 			}
 
@@ -139,7 +141,7 @@ public class DrawingBoard extends JComponent {
 		});
 	}
 
-	// this is the main method that draw all shapes
+	// this is the main method which draw all shapes
 	public void paint(Graphics g) {
 		MainWindow.graph = (Graphics2D) g;
 
@@ -234,7 +236,10 @@ public class DrawingBoard extends JComponent {
 		EntityManager.addIntoDatabase(x, y, height, weight, r, g, b, type);
 	}
 
-	private void contain(Point p) {
+	
+	//this method indicate whether the given point is in the shape or not
+	// if it is then change the shape's color
+	private void changeColor(Point p) {
 
 		try {
 			Iterator<Shape> shapeIter = shapes.iterator();
