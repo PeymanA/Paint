@@ -34,34 +34,45 @@ public class DrawingBoard extends JComponent {
 				int a = -e.getWheelRotation();
 				ArrayList<Shape> temp = new ArrayList<Shape>();
 				for (Shape s : shapes) {
+					int startX = (int) s.getBounds2D().getMinX();
+					int startY = (int) s.getBounds2D().getMinY();
+					int endX = (int) s.getBounds2D().getMaxX();
+					int endY = (int) s.getBounds2D().getMaxY();
+					if (startX < e.getX())
+						startX -= (e.getX() - startX) / 50 * a;
+					else
+						startX += (startX - e.getX()) / 50 * a;
+					if (startY < e.getY())
+						startY -= (e.getY() - startY) / 50 * a;
+					else
+						startY += (startY - e.getY()) / 50 * a;
+					if (endX < e.getX())
+						endX -= (e.getX() - endX) / 50 * a;
+					else
+						endX += (endX - e.getX()) / 50 * a;
+					if (endY <e.getY())
+						endY -= (e.getY() - endY) / 50 * a;
+					else
+						endY += (endY - e.getY()) / 50 * a;
+
+					// System.out.println(s.getBounds2D().getX() + " " +
+					// s.getBounds2D().getMinX() + " " +
+					// s.getBounds2D().getMaxX());
 					Shape shape = null;
 					if (s.toString().substring(14, 18).equals("Line")) {
-						// Create a new line using x & y coordinates
-						shape = drawLine((int) s.getBounds2D().getMinX() - a,
-								(int) s.getBounds2D().getMinY() - a, (int) s
-										.getBounds2D().getMaxX() + a, (int) s
-										.getBounds2D().getMaxY() + a);
+						shape = drawLine(startX, startY, endX, endY);
 					} else
 
 					if (s.toString().substring(14, 18).equals("Elli")) {
-						// Create a new circle using x & y coordinates
-						shape = drawEllipse((int) s.getBounds2D().getMinX() - a,
-								(int) s.getBounds2D().getMinY() - a, (int) s
-								.getBounds2D().getMaxX() + a, (int) s
-								.getBounds2D().getMaxY() + a);
+						shape = drawEllipse(startX, startY, endX, endY);
 					} else
 
 					if (s.toString().substring(14, 18).equals("Rect")) {
-						// Create a new rectangle using x & y coordinates
-						shape = drawRectangle((int) s.getBounds2D().getMinX() - a,
-								(int) s.getBounds2D().getMinY() - a, (int) s
-								.getBounds2D().getMaxX() + a, (int) s
-								.getBounds2D().getMaxY() + a);
+						shape = drawRectangle(startX, startY, endX, endY);
 					}
 					temp.add(shape);
-					System.out.println(s.toString().substring(14, 18)
-							+ "\na = " + a);
-
+					// System.out.println(s.toString().substring(14, 18)
+					// + "\na = " + a);
 				}
 				shapes = temp;
 				repaint();
